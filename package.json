@@ -4,5 +4,23 @@
   },
   "scripts": {
     "test": "jest"
-  }
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.2"
+  },
+  "name": "miranda-testing",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cuadri84/miranda-testing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cuadri84/miranda-testing/issues"
+  },
+  "homepage": "https://github.com/Cuadri84/miranda-testing#readme",
+  "description": ""
 }
