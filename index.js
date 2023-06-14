@@ -20,7 +20,15 @@ class Room {
     }
     return false;
   }
-  // occupancyPercentage() {}
+  occupancyPercentage(startDate, endDate) {
+    const rangeDates = getRange(startDate, endDate);
+    let occupiedDates = [];
+    for (let date of rangeDates) {
+      this.isOccupied(date) ? occupiedDates.push(date) : 0;
+    }
+    const totalPercentage = (occupiedDates.length / rangeDates.length) * 100;
+    return totalPercentage < 100 ? totalPercentage : 100;
+  }
   // totalOccupancyPercentage() {}
   // availableRooms() {}
 }
@@ -40,6 +48,16 @@ class Booking {
 
     return price;
   }
+}
+
+function getRange(startDate, endDate) {
+  let range = [];
+  const theDate = new Date(startDate);
+  while (theDate < endDate) {
+    range = [...range, new Date(theDate)];
+    theDate.setDate(theDate.getDate() + 1);
+  }
+  return range;
 }
 
 module.exports = {

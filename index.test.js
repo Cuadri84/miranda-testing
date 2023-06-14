@@ -3,8 +3,8 @@ const { Room, Booking } = require("./index");
 const booking1 = new Booking({
   name: "John Doe",
   email: "johndoe@example.com",
-  checkIn: new Date("2023-06-15"),
-  checkOut: new Date("2023-06-18"),
+  checkIn: new Date("2023-06-01"),
+  checkOut: new Date("2023-06-02"),
   discount: 10,
 });
 
@@ -97,27 +97,124 @@ describe("get fee method", () => {
     expect(booking.getFee()).toBe(100);
   });
 });
-// describe("returns percentage of days with ocupancy within the range of days given method", () => {
-//   ocupacion 0 en los dias dados
-//   ocupacion 100 en los dias ocupados
-// });
-// describe("total ocupancy percentage across all rooms method", () => {
-//   ocupacion 0
-//   ocupacion 25
-//   ocupacion 50
-//   ocupacion 100
-// });
-// describe("returns an array of the rooms that are not ocupied for the range of days method", () => {
-
-// });
-
-// describe("returns the fee with discounts on room and booking method", () => {
-//   descuento del 0
-//   decuento del 20 solo en room
-//   decuento del 70 solo en room
-//   decuento del 20 solo en booking
-//   decuento del 70 solo en booking
-//   descuento del 20 en room y 0 en booking
-//   descuento del 0 en room y 30 en booking
-//   desceunto de 20 en room y 40 en booking
-// });
+describe("returns percentage of days with ocupancy within the range of days given method", () => {
+  it("0% occupancy", () => {
+    const room = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    expect(
+      room.occupancyPercentage(new Date("2023-06-01"), new Date("2023-06-05"))
+    ).toBe(0);
+  });
+  it("50% occupancy", () => {
+    const room = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    room.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-01"),
+      checkOut: new Date("2023-06-02"),
+      discount: 10,
+    });
+    expect(
+      room.occupancyPercentage(new Date("2023-06-01"), new Date("2023-06-05"))
+    ).toBe(50);
+  });
+  it("100% occupancy", () => {
+    const room = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    room.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-01"),
+      checkOut: new Date("2023-06-05"),
+      discount: 10,
+    });
+    expect(
+      room.occupancyPercentage(new Date("2023-06-01"), new Date("2023-06-05"))
+    ).toBe(100);
+  });
+  it("0% occupancy with various bookings", () => {
+    const room = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    room
+      .addBooking({
+        name: "John Doe",
+        email: "johndoe@example.com",
+        checkIn: new Date("2023-05-01"),
+        checkOut: new Date("2023-05-05"),
+        discount: 10,
+      })
+      .addBooking({
+        name: "John Doe",
+        email: "johndoe@example.com",
+        checkIn: new Date("2023-07-01"),
+        checkOut: new Date("2023-07-05"),
+        discount: 10,
+      });
+    expect(
+      room.occupancyPercentage(new Date("2023-06-01"), new Date("2023-06-05"))
+    ).toBe(0);
+  });
+  it("50% occupancy with various bookings", () => {
+    const room = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    room
+      .addBooking({
+        name: "John Doe",
+        email: "johndoe@example.com",
+        checkIn: new Date("2023-06-01"),
+        checkOut: new Date("2023-06-02"),
+        discount: 10,
+      })
+      .addBooking({
+        name: "John Doe",
+        email: "johndoe@example.com",
+        checkIn: new Date("2023-07-02"),
+        checkOut: new Date("2023-07-05"),
+        discount: 10,
+      });
+    expect(
+      room.occupancyPercentage(new Date("2023-06-01"), new Date("2023-06-05"))
+    ).toBe(50);
+  });
+  it("100% occupancy with various bookings", () => {
+    const room = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    room
+      .addBooking({
+        name: "John Doe",
+        email: "johndoe@example.com",
+        checkIn: new Date("2023-06-01"),
+        checkOut: new Date("2023-06-03"),
+        discount: 10,
+      })
+      .addBooking({
+        name: "John Doe",
+        email: "johndoe@example.com",
+        checkIn: new Date("2023-06-02"),
+        checkOut: new Date("2023-06-05"),
+        discount: 10,
+      });
+    expect(
+      room.occupancyPercentage(new Date("2023-06-01"), new Date("2023-06-05"))
+    ).toBe(100);
+  });
+});
