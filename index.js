@@ -33,7 +33,13 @@ class Booking {
     this.discount = discount;
     this.room = room;
   }
-  getFee() {}
+  getFee() {
+    const rate = this.room.rate;
+    const totalDiscount = rate - (100 - this.discount - this.room.discount);
+    const price = totalDiscount >= rate ? rate : rate - totalDiscount;
+
+    return price;
+  }
 }
 
 module.exports = {

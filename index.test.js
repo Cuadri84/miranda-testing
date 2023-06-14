@@ -13,22 +13,88 @@ const booking2 = new Booking({
   email: "janesmith@example.com",
   checkIn: new Date("2023-07-15"),
   checkOut: new Date("2023-07-25"),
-  discount: 5,
+  discount: 0,
 });
 
 const room1 = {
   name: "Standard",
   rate: 100,
   discount: 0,
-  // bookings: [booking1, booking2],
 };
-const room = new Room(room1);
-room.addBooking(booking1).addBooking(booking2);
-console.log(room.bookings[0]);
+
 describe("if room is occupied method", () => {
-  test("Si existen reservas para esa habitación", () => {
+  it("booking fo that room", () => {
+    const room = new Room(room1);
+    room.addBooking(booking1).addBooking(booking2);
     expect(room.isOccupied(new Date("2023-07-17"))).toBe(true);
+  });
+  it("not booking for that room", () => {
+    const room = new Room(room1);
+    room.addBooking(booking1);
     expect(room.isOccupied(new Date("2023-09-08"))).toBe(false);
+  });
+});
+
+describe("get fee method", () => {
+  it("0 discount", () => {
+    const room3 = new Room(room1);
+    const booking = new Booking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-15"),
+      checkOut: new Date("2023-06-18"),
+      discount: 0,
+      room: room3,
+    });
+    expect(booking.getFee()).toBe(100);
+  });
+  it("20 discount in room", () => {
+    const room3 = new Room({ name: "Standard", rate: 100, discount: 20 });
+    const booking = new Booking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-15"),
+      checkOut: new Date("2023-06-18"),
+      discount: 0,
+      room: room3,
+    });
+    expect(booking.getFee()).toBe(80);
+  });
+  it("only discount in booking", () => {
+    const room3 = new Room({ name: "Standard", rate: 100, discount: 0 });
+    const booking = new Booking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-15"),
+      checkOut: new Date("2023-06-18"),
+      discount: 30,
+      room: room3,
+    });
+    expect(booking.getFee()).toBe(70);
+  });
+  it("discount in room and in booking", () => {
+    const room3 = new Room({ name: "Standard", rate: 100, discount: 10 });
+    const booking = new Booking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-15"),
+      checkOut: new Date("2023-06-18"),
+      discount: 5,
+      room: room3,
+    });
+    expect(booking.getFee()).toBe(85);
+  });
+  it("discount negative to be rate", () => {
+    const room3 = new Room({ name: "Standard", rate: 100, discount: 30 });
+    const booking = new Booking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-15"),
+      checkOut: new Date("2023-06-18"),
+      discount: 95,
+      room: room3,
+    });
+    expect(booking.getFee()).toBe(100);
   });
 });
 // describe("returns percentage of days with ocupancy within the range of days given method", () => {
