@@ -1,4 +1,11 @@
-const { Room, Booking, totalOccupancyPercentage } = require("./index");
+const {
+  Room,
+  Booking,
+  totalOccupancyPercentage,
+  availableRooms,
+} = require("./index");
+
+//ROOM OCCUPIED-------------------------------------------------------------------
 
 describe("if room is occupied method", () => {
   it("booking fo that room", () => {
@@ -40,6 +47,8 @@ describe("if room is occupied method", () => {
     expect(room.isOccupied(new Date("2023-09-08"))).toBe(false);
   });
 });
+
+//GET FEE----------------------------------------------------------------
 
 describe("get fee method", () => {
   it("0 discount", () => {
@@ -107,6 +116,8 @@ describe("get fee method", () => {
     expect(booking.getFee()).toBe(100);
   });
 });
+
+//PECENTAGE -------------------------------------------------------------------------------
 
 describe("returns percentage of days with ocupancy within the range of days given method", () => {
   it("0% occupancy", () => {
@@ -229,6 +240,8 @@ describe("returns percentage of days with ocupancy within the range of days give
     ).toBe(100);
   });
 });
+
+//TOTAL PERCENTAGE-------------------------------------------------------------------
 
 describe("totalOccupancyPercentage", () => {
   it("0 ocupation in two rooms", () => {
@@ -518,5 +531,107 @@ describe("totalOccupancyPercentage", () => {
         new Date("2023-06-10")
       )
     ).toBe(100);
+  });
+});
+
+//AVAILABLE ROOMS TESTS---------------------------------------------------------
+
+describe("availableRooms", () => {
+  it("two rooms- no rooms available", () => {
+    const rooms = [];
+    const room1 = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    room1.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-01"),
+      checkOut: new Date("2023-06-09"),
+      discount: 10,
+    });
+    const room2 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room2.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-01"),
+      checkOut: new Date("2023-06-09"),
+      discount: 10,
+    });
+    rooms.push(room1, room2);
+    expect(
+      availableRooms(rooms, new Date("2023-06-01"), new Date("2023-06-09"))
+    ).toBe("No room available");
+  });
+
+  it("two rooms- one room available", () => {
+    const rooms = [];
+    const room1 = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    room1.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-01"),
+      checkOut: new Date("2023-06-09"),
+      discount: 10,
+    });
+    const room2 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room2.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-04"),
+      checkOut: new Date("2023-06-09"),
+      discount: 10,
+    });
+    rooms.push(room1, room2);
+    const expected = ["Deluxe"];
+    expect(
+      availableRooms(rooms, new Date("2023-06-01"), new Date("2023-06-09"))
+    ).toEqual(expect.arrayContaining(expected));
+  });
+
+  it("two rooms- both rooms available", () => {
+    const rooms = [];
+    const room1 = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    room1.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-05"),
+      checkOut: new Date("2023-06-09"),
+      discount: 10,
+    });
+    const room2 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room2.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-04"),
+      checkOut: new Date("2023-06-09"),
+      discount: 10,
+    });
+    rooms.push(room1, room2);
+    const expected = ["Standard", "Deluxe"];
+    expect(
+      availableRooms(rooms, new Date("2023-06-01"), new Date("2023-06-09"))
+    ).toEqual(expect.arrayContaining(expected));
   });
 });
