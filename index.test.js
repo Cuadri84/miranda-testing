@@ -1,4 +1,4 @@
-const { Room, Booking } = require("./index");
+const { Room, Booking, totalOccupancyPercentage } = require("./index");
 
 describe("if room is occupied method", () => {
   it("booking fo that room", () => {
@@ -226,6 +226,297 @@ describe("returns percentage of days with ocupancy within the range of days give
       });
     expect(
       room.occupancyPercentage(new Date("2023-06-01"), new Date("2023-06-05"))
+    ).toBe(100);
+  });
+});
+
+describe("totalOccupancyPercentage", () => {
+  it("0 ocupation in two rooms", () => {
+    const rooms = [];
+    const room1 = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    room1.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-07-01"),
+      checkOut: new Date("2023-07-06"),
+      discount: 10,
+    });
+    const room2 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room2.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-07-02"),
+      checkOut: new Date("2023-07-05"),
+      discount: 10,
+    });
+    rooms.push(room1, room2);
+    expect(
+      totalOccupancyPercentage(
+        rooms,
+        new Date("2023-06-01"),
+        new Date("2023-06-10")
+      )
+    ).toBe(0);
+  });
+
+  it("50 ocupation in two rooms", () => {
+    const rooms = [];
+    const room1 = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    room1.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-01"),
+      checkOut: new Date("2023-06-05"),
+      discount: 10,
+    });
+    const room2 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room2.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-07-02"),
+      checkOut: new Date("2023-07-05"),
+      discount: 10,
+    });
+    rooms.push(room1, room2);
+    expect(
+      totalOccupancyPercentage(
+        rooms,
+        new Date("2023-06-01"),
+        new Date("2023-06-11")
+      )
+    ).toBe(50);
+  });
+
+  it("100 ocupation in two rooms", () => {
+    const rooms = [];
+    const room1 = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    room1.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-01"),
+      checkOut: new Date("2023-06-08"),
+      discount: 10,
+    });
+
+    const room2 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room2.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-05"),
+      checkOut: new Date("2023-06-10"),
+      discount: 10,
+    });
+    rooms.push(room1, room2);
+    expect(
+      totalOccupancyPercentage(
+        rooms,
+        new Date("2023-06-01"),
+        new Date("2023-06-10")
+      )
+    ).toBe(100);
+  });
+
+  it("0 ocupation in four rooms", () => {
+    const rooms = [];
+    const room1 = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    room1.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-07-01"),
+      checkOut: new Date("2023-07-06"),
+      discount: 10,
+    });
+    const room2 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room2.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-07-02"),
+      checkOut: new Date("2023-07-05"),
+      discount: 10,
+    });
+    const room3 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room3.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-07-02"),
+      checkOut: new Date("2023-07-05"),
+      discount: 10,
+    });
+    const room4 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room4.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-07-02"),
+      checkOut: new Date("2023-07-05"),
+      discount: 10,
+    });
+    rooms.push(room1, room2, room3, room4);
+    expect(
+      totalOccupancyPercentage(
+        rooms,
+        new Date("2023-06-01"),
+        new Date("2023-06-10")
+      )
+    ).toBe(0);
+  });
+
+  it("50 ocupation in four rooms", () => {
+    const rooms = [];
+    const room1 = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    room1.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-01"),
+      checkOut: new Date("2023-06-05"),
+      discount: 10,
+    });
+    const room2 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room2.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-07-02"),
+      checkOut: new Date("2023-07-05"),
+      discount: 10,
+    });
+    const room3 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room3.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-07-02"),
+      checkOut: new Date("2023-07-05"),
+      discount: 10,
+    });
+    const room4 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room4.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-07-02"),
+      checkOut: new Date("2023-07-05"),
+      discount: 10,
+    });
+    rooms.push(room1, room2, room3, room4);
+    expect(
+      totalOccupancyPercentage(
+        rooms,
+        new Date("2023-06-01"),
+        new Date("2023-06-11")
+      )
+    ).toBe(50);
+  });
+
+  it("100 ocupation in four rooms", () => {
+    const rooms = [];
+    const room1 = new Room({
+      name: "Standard",
+      rate: 100,
+      discount: 30,
+    });
+    room1.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-01"),
+      checkOut: new Date("2023-06-08"),
+      discount: 10,
+    });
+    const room2 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room2.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-05"),
+      checkOut: new Date("2023-06-10"),
+      discount: 10,
+    });
+    const room3 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room3.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-05"),
+      checkOut: new Date("2023-06-10"),
+      discount: 10,
+    });
+    const room4 = new Room({
+      name: "Deluxe",
+      rate: 100,
+      discount: 30,
+    });
+    room4.addBooking({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      checkIn: new Date("2023-06-05"),
+      checkOut: new Date("2023-06-10"),
+      discount: 10,
+    });
+    rooms.push(room1, room2, room3, room4);
+    expect(
+      totalOccupancyPercentage(
+        rooms,
+        new Date("2023-06-01"),
+        new Date("2023-06-10")
+      )
     ).toBe(100);
   });
 });

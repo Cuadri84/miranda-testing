@@ -29,7 +29,7 @@ class Room {
     const totalPercentage = (occupiedDates.length / rangeDates.length) * 100;
     return totalPercentage < 100 ? totalPercentage : 100;
   }
-  // totalOccupancyPercentage() {}
+
   // availableRooms() {}
 }
 class Booking {
@@ -45,7 +45,6 @@ class Booking {
     const rate = this.room.rate;
     const totalDiscount = rate - (100 - this.discount - this.room.discount);
     const price = totalDiscount >= rate ? rate : rate - totalDiscount;
-
     return price;
   }
 }
@@ -60,7 +59,21 @@ function getRange(startDate, endDate) {
   return range;
 }
 
+function totalOccupancyPercentage(rooms, startDate, endDate) {
+  const rangeDates = getRange(startDate, endDate);
+  const occupiedDates = [];
+  for (let room of rooms) {
+    for (let day of rangeDates) {
+      room.isOccupied(day) ? occupiedDates.push(day) : 0;
+    }
+  }
+  const totalOccupancyPercentage =
+    (occupiedDates.length / rangeDates.length) * 100;
+  return totalOccupancyPercentage < 100 ? totalOccupancyPercentage : 100;
+}
+
 module.exports = {
   Room,
   Booking,
+  totalOccupancyPercentage,
 };
