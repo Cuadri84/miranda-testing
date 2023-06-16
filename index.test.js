@@ -1,9 +1,4 @@
-const {
-  Room,
-  Booking,
-  totalOccupancyPercentage,
-  availableRooms,
-} = require("./index");
+const { Room, Booking } = require("./index");
 
 //ROOM OCCUPIED-------------------------------------------------------------------
 
@@ -272,7 +267,7 @@ describe("totalOccupancyPercentage", () => {
     });
     rooms.push(room1, room2);
     expect(
-      totalOccupancyPercentage(
+      Room.totalOccupancyPercentage(
         rooms,
         new Date("2023-06-01"),
         new Date("2023-06-10")
@@ -308,7 +303,7 @@ describe("totalOccupancyPercentage", () => {
     });
     rooms.push(room1, room2);
     expect(
-      totalOccupancyPercentage(
+      Room.totalOccupancyPercentage(
         rooms,
         new Date("2023-06-01"),
         new Date("2023-06-11")
@@ -345,7 +340,7 @@ describe("totalOccupancyPercentage", () => {
     });
     rooms.push(room1, room2);
     expect(
-      totalOccupancyPercentage(
+      Room.totalOccupancyPercentage(
         rooms,
         new Date("2023-06-01"),
         new Date("2023-06-10")
@@ -405,7 +400,7 @@ describe("totalOccupancyPercentage", () => {
     });
     rooms.push(room1, room2, room3, room4);
     expect(
-      totalOccupancyPercentage(
+      Room.totalOccupancyPercentage(
         rooms,
         new Date("2023-06-01"),
         new Date("2023-06-10")
@@ -465,7 +460,7 @@ describe("totalOccupancyPercentage", () => {
     });
     rooms.push(room1, room2, room3, room4);
     expect(
-      totalOccupancyPercentage(
+      Room.totalOccupancyPercentage(
         rooms,
         new Date("2023-06-01"),
         new Date("2023-06-11")
@@ -525,7 +520,7 @@ describe("totalOccupancyPercentage", () => {
     });
     rooms.push(room1, room2, room3, room4);
     expect(
-      totalOccupancyPercentage(
+      Room.totalOccupancyPercentage(
         rooms,
         new Date("2023-06-01"),
         new Date("2023-06-10")
@@ -565,7 +560,7 @@ describe("availableRooms", () => {
     });
     rooms.push(room1, room2);
     expect(
-      availableRooms(rooms, new Date("2023-06-01"), new Date("2023-06-09"))
+      Room.availableRooms(rooms, new Date("2023-06-01"), new Date("2023-06-09"))
     ).toBe("No room available");
   });
 
@@ -598,7 +593,7 @@ describe("availableRooms", () => {
     rooms.push(room1, room2);
     const expected = ["Deluxe"];
     expect(
-      availableRooms(rooms, new Date("2023-06-01"), new Date("2023-06-09"))
+      Room.availableRooms(rooms, new Date("2023-06-01"), new Date("2023-06-09"))
     ).toEqual(expect.arrayContaining(expected));
   });
 
@@ -631,7 +626,7 @@ describe("availableRooms", () => {
     rooms.push(room1, room2);
     const expected = ["Standard", "Deluxe"];
     expect(
-      availableRooms(rooms, new Date("2023-06-01"), new Date("2023-06-09"))
+      Room.availableRooms(rooms, new Date("2023-06-01"), new Date("2023-06-09"))
     ).toEqual(expect.arrayContaining(expected));
   });
 });

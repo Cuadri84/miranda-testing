@@ -29,8 +29,33 @@ class Room {
     const totalPercentage = (occupiedDates.length / rangeDates.length) * 100;
     return totalPercentage < 100 ? totalPercentage : 100;
   }
-
-  // availableRooms() {}
+  static totalOccupancyPercentage(rooms, startDate, endDate) {
+    const rangeDates = getRange(startDate, endDate);
+    const occupiedDates = [];
+    for (let room of rooms) {
+      for (let day of rangeDates) {
+        room.isOccupied(day) ? occupiedDates.push(day) : 0;
+      }
+    }
+    const totalOccupancyPercentage =
+      (occupiedDates.length / rangeDates.length) * 100;
+    return totalOccupancyPercentage < 100 ? totalOccupancyPercentage : 100;
+  }
+  static availableRooms(rooms, startDate, endDate) {
+    const rangeDates = getRange(startDate, endDate);
+    const available = [];
+    for (let room of rooms) {
+      for (let day of rangeDates) {
+        if (room.isOccupied(day)) {
+          break;
+        }
+        if (!available.includes(room.name)) {
+          available.push(room.name);
+        }
+      }
+    }
+    return available.length ? available : "No room available";
+  }
 }
 class Booking {
   constructor({ name, email, checkIn, checkOut, discount, room }) {
@@ -59,38 +84,7 @@ function getRange(startDate, endDate) {
   return range;
 }
 
-function totalOccupancyPercentage(rooms, startDate, endDate) {
-  const rangeDates = getRange(startDate, endDate);
-  const occupiedDates = [];
-  for (let room of rooms) {
-    for (let day of rangeDates) {
-      room.isOccupied(day) ? occupiedDates.push(day) : 0;
-    }
-  }
-  const totalOccupancyPercentage =
-    (occupiedDates.length / rangeDates.length) * 100;
-  return totalOccupancyPercentage < 100 ? totalOccupancyPercentage : 100;
-}
-
-function availableRooms(rooms, startDate, endDate) {
-  const rangeDates = getRange(startDate, endDate);
-  const available = [];
-  for (let room of rooms) {
-    for (let day of rangeDates) {
-      if (room.isOccupied(day)) {
-        break;
-      }
-      if (!available.includes(room.name)) {
-        available.push(room.name);
-      }
-    }
-  }
-  return available.length ? available : "No room available";
-}
-
 module.exports = {
   Room,
   Booking,
-  totalOccupancyPercentage,
-  availableRooms,
 };
